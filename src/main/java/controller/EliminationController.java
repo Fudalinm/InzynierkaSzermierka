@@ -23,10 +23,10 @@ import model.enums.WeaponType;
 import model.exceptions.NoSuchWeaponException;
 import util.Pointer;
 import util.RationalNumber;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
 /** TODO: undo doesnt change color properly
  * TODO: should add function set cell colors properly :) which is invoked by command controller*/
 /**
@@ -66,6 +66,7 @@ public class EliminationController implements Initializable {
     Tab rapierTab = null;
     Tab sabreTab = null;
     Tab smallSwordTab = null;
+    Tab finalResults = null;
 
     private TableView rapierTableView;
     private TableView sabreTableView;
@@ -689,6 +690,62 @@ public class EliminationController implements Initializable {
         tabToRet.setContent(mainTabPane);
 
         return tabToRet;
+    }
+
+    Tab generateFinalResultTab() {
+
+        Competition competition = Competition.getInstance();
+        TableView<Participant> tv = new TableView<>();
+
+        ObservableList<Participant> participants = FXCollections.observableArrayList(competition.getParticipants());
+        tv.setItems(participants);
+
+        TableColumn<Participant,String> surname = new TableColumn<>();
+        TableColumn<Participant,String> name = new TableColumn<>();
+        TableColumn<Participant,String> smallSword = new TableColumn<>();
+        TableColumn<Participant,String> sabre = new TableColumn<>();
+        TableColumn<Participant,String> rapier = new TableColumn<>();
+        TableColumn<Participant,String> triathlonOpen = new TableColumn<>();
+        TableColumn<Participant,String> triathlonWomen = new TableColumn<>(); /* Because we can have '-' as result */
+
+        surname.setCellValueFactory(p -> new SimpleStringProperty(p.getValue().getSurname()));
+        name.setCellValueFactory(p-> new SimpleStringProperty(p.getValue().getName()));
+        smallSword.setCellValueFactory(p -> {
+            try {
+                return new SimpleStringProperty(p.getValue().getPointsForWeaponProperty(WeaponType.SMALL_SWORD).toString());
+            } catch (NoSuchWeaponException e) {
+                return new SimpleStringProperty("-");
+            }
+        });
+        sabre.setCellValueFactory(p -> {
+            try {
+                return new SimpleStringProperty(p.getValue().getPointsForWeaponProperty(WeaponType.SABRE).toString());
+            } catch (NoSuchWeaponException e) {
+                return new SimpleStringProperty("-");
+            }
+        });
+        rapier.setCellValueFactory(p -> {
+            try {
+                return new SimpleStringProperty(p.getValue().getPointsForWeaponProperty(WeaponType.RAPIER).toString());
+            } catch (NoSuchWeaponException e) {
+                return new SimpleStringProperty("-");
+            }
+        });
+        triathlonOpen.setCellValueFactory(p-> p.getValue().getParticipantResult().triathlonOpenProperty());
+        triathlonWomen.setCellValueFactory(p-> p.getValue().getParticipantResult().triathlonWomenProperty());
+
+        tv.getColumns().addAll(surname,name,smallSword,sabre,rapier,triathlonOpen,triathlonWomen);
+        tv.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        GridPane gridPane = new GridPane();
+        gridPane.getChildren().addAll(tv);
+
+        Tab tabToret = new Tab();
+        tabToret.setClosable(false);
+        tabToret.setText("Results");
+        tabToret.setContent(gridPane);
+
+        return tabToret;
     }
 
 }

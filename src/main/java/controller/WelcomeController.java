@@ -1,32 +1,23 @@
 package controller;
 
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import model.*;
 import model.KillerDrawing.RandomKillerRandomizationStrategy;
 import model.config.ConfigReader;
 import model.enums.WeaponType;
 import util.HumanReadableFatalError;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.charset.Charset;
 import java.util.ResourceBundle;
-import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class WelcomeController implements Initializable {

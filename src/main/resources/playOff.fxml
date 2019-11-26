@@ -29,7 +29,7 @@
     </columnConstraints>
     <Label alignment="CENTER" text="Potrzebna Dogrywka" GridPane.columnIndex="1" GridPane.rowIndex="1" />
     <Text fx:id="textField" textAlignment="LEFT" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-    <Button fx:id="okButton" alignment="CENTER_LEFT" onAction="#okPressed" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+    <Button fx:id="okButton" GridPane.halignment="LEFT" alignment="CENTER_LEFT" onAction="#okPressed" GridPane.columnIndex="1" GridPane.rowIndex="4" />
     <Button fx:id="cancelButton" alignment="CENTER_RIGHT" onAction="#cancelPressed" prefHeight="29.0" prefWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
     <TableView fx:id="participantTable" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
 

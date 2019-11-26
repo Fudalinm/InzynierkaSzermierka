@@ -31,6 +31,9 @@ public class Participant implements Serializable{
     private StringProperty locationGroup;
     private ObjectProperty<JudgeState> judgeState;
     private ObjectProperty<Date> licenseExpDate;
+    private BooleanProperty female;
+
+    private SimpleObjectProperty<ParticipantResult> participantResult;
     private int timesKiller = 0;
 
     /** for table view required */
@@ -58,6 +61,9 @@ public class Participant implements Serializable{
         this.fRapierParticipant = new SimpleBooleanProperty(false);
         this.weaponPointsProperty = new HashMap<>();
         this.rapierPoints = new SimpleObjectProperty<RationalNumber>(new RationalNumber(0));
+
+        this.female = new SimpleBooleanProperty(false);
+        this.participantResult = new SimpleObjectProperty<>(new ParticipantResult());
     }
 
     /*
@@ -129,6 +135,13 @@ public class Participant implements Serializable{
         }
     }
 
+    public boolean isFemale() { return female.get(); }
+
+    public BooleanProperty femaleProperty() { return female; }
+
+    public ParticipantResult getParticipantResult() { return participantResult.get(); }
+
+    public SimpleObjectProperty<ParticipantResult> participantResultProperty() { return participantResult; }
 
     public String getName() { return name.get(); }
 
@@ -270,6 +283,8 @@ public class Participant implements Serializable{
         Map<WeaponType, util.RationalNumber> weaponPoints = new HashMap<>();
         weaponPointsProperty.forEach((wt, wp) -> weaponPoints.put(wt, wp.get()));
         stream.writeObject(weaponPoints);
+        stream.writeObject(female.getValue());
+        stream.writeObject(participantResult.getValue());
     }
 
     private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
@@ -290,5 +305,7 @@ public class Participant implements Serializable{
         weaponPointsProperty = FXCollections.observableHashMap();
         Map<WeaponType, RationalNumber> m = (Map<WeaponType, RationalNumber>) stream.readObject();
         m.forEach((wt, wp) -> weaponPointsProperty.put(wt, new SimpleObjectProperty<>(wp)));
+        female = new SimpleBooleanProperty(stream.readBoolean());
+        participantResult = new SimpleObjectProperty<>((ParticipantResult) stream.readObject());
     }
 }
